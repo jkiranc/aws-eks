@@ -73,18 +73,6 @@ data:
           }
         },
         "force_flush_interval": 5
-      },
-      "metrics": {
-        "metrics_collected": {
-          "nvidia_gpu": {
-            "measurement": [
-              "nvidia_smi_utilization_gpu",
-              "nvidia_smi_utilization_memory"
-            ],
-            "metrics_collection_interval": 60
-          }
-        },
-        "force_flush_interval": 5
       }
     }
 kind: ConfigMap
