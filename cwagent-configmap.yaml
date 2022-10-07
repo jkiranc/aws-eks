@@ -5,16 +5,34 @@ data:
   # please keep the Json blob valid.
   cwagentconfig.json: |
     {
+      "agent": {
+          "region": "us-east-2"
+      },
       "logs": {
-        "metrics_collected": {
-          "kubernetes": {
-            "cluster_name": "cloudcadi-eks-cluster",
-            "metrics_collection_interval": 60
+          "metrics_collected": {
+              "kubernetes": {
+                  "cluster_name": "cloudcadi-eks-cluster",
+                  "metrics_collection_interval": 60
+              }
+          },
+          "force_flush_interval": 5
+      },
+      "metrics": {
+          "metrics_collected": {
+              "statsd": {
+                  "service_address": ":8125",
+                  "metrics_collection_interval":60,
+              },
+              "nvidia_gpu": {
+                "measurement": [
+                  "nvidia_smi_utilization_gpu",
+                  "nvidia_smi_utilization_memory"
+                ],
+                "metrics_collection_interval": 60
+              }
           }
-        },
-        "force_flush_interval": 5
       }
-    }
+  }
 kind: ConfigMap
 metadata:
   name: cwagentconfig
