@@ -6,7 +6,6 @@ metadata:
   labels:
     name: amazon-cloudwatch
 ---
-
 # create cwagent service account and role binding
 apiVersion: v1
 kind: ServiceAccount
@@ -38,7 +37,7 @@ rules:
   - apiGroups: [""]
     resources: ["configmaps"]
     resourceNames: ["cwagent-clusterleader"]
-    verbs: ["get","update"]
+    verbs: ["get", "update"]
 
 ---
 kind: ClusterRoleBinding
@@ -54,7 +53,6 @@ roleRef:
   name: cloudwatch-agent-role
   apiGroup: rbac.authorization.k8s.io
 ---
-
 # create configmap for cwagent config
 apiVersion: v1
 data:
@@ -70,7 +68,18 @@ data:
           "kubernetes": {
             "cluster_name": "{{cluster_name}}",
             "metrics_collection_interval": 60
-          },
+          }
+        },
+        "force_flush_interval": 5
+      },
+      "metrics": {
+        "namespace": "Custom",
+        "append_dimensions": {
+          "InstanceId": "${aws:InstanceId}"
+          "InstanceType": "${aws:InstanceType}",
+          "AutoScalingGroupName": "${aws:AutoScalingGroupName}"
+        },
+        "metrics_collected": {
           "nvidia_gpu": {
             "measurement": [
               "utilization_gpu",
@@ -80,8 +89,7 @@ data:
             ],
             "metrics_collection_interval": 60
           }
-        },
-        "force_flush_interval": 5
+        }
       }
     }
 kind: ConfigMap
@@ -89,7 +97,6 @@ metadata:
   name: cwagentconfig
   namespace: amazon-cloudwatch
 ---
-
 # deploy cwagent as daemonset
 apiVersion: apps/v1
 kind: DaemonSet
@@ -114,7 +121,7 @@ spec:
           #    protocol: UDP
           resources:
             limits:
-              cpu:  200m
+              cpu: 200m
               memory: 200Mi
             requests:
               cpu: 200m
@@ -183,19 +190,17 @@ spec:
       serviceAccountName: cloudwatch-agent
 
 ---
-
 # create configmap for cluster name and aws region for CloudWatch Logs
 # need to replace the placeholders {{cluster_name}} and {{region_name}}
 apiVersion: v1
 data:
-  cluster.name: {{cluster_name}}
-  logs.region: {{region_name}}
+  cluster.name: { { cluster_name } }
+  logs.region: { { region_name } }
 kind: ConfigMap
 metadata:
   name: cluster-info
   namespace: amazon-cloudwatch
 ---
-
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -570,7 +575,7 @@ spec:
       initContainers:
         - name: copy-fluentd-config
           image: busybox
-          command: ['sh', '-c', 'cp /config-volume/..data/* /fluentd/etc']
+          command: ["sh", "-c", "cp /config-volume/..data/* /fluentd/etc"]
           volumeMounts:
             - name: config-volume
               mountPath: /config-volume
@@ -578,7 +583,7 @@ spec:
               mountPath: /fluentd/etc
         - name: update-log-driver
           image: busybox
-          command: ['sh','-c','']
+          command: ["sh", "-c", ""]
       containers:
         - name: fluentd-cloudwatch
           image: fluent/fluentd-kubernetes-daemonset:v1.7.3-debian-cloudwatch-1.0
