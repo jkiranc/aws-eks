@@ -70,15 +70,6 @@ data:
           "kubernetes": {
             "cluster_name": "{{cluster_name}}",
             "metrics_collection_interval": 60
-          },
-          "nvidia_gpu": {
-            "measurement": [
-              "utilization_gpu",
-              "utilization_memory",
-              "memory_total",
-              "memory_used"
-            ],
-            "metrics_collection_interval": 60
           }
         },
         "force_flush_interval": 5
