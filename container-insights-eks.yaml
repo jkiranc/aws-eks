@@ -71,12 +71,10 @@ data:
           "InstanceId": "${aws:InstanceId}"
         },
         "metrics_collected": {
-          "mem": {
+          "nvidia_gpu": {
             "measurement": [
-              {
-                "name": "mem_used_percent",
-                "rename": "memory_used_percent"
-              }
+              "utilization_gpu",
+              "utilization_memory"
             ],
             "metrics_collection_interval": 60
           }
