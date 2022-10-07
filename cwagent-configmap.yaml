@@ -32,7 +32,7 @@ data:
               }
           }
       }
-  }
+    }
 kind: ConfigMap
 metadata:
   name: cwagentconfig
