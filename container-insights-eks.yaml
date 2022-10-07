@@ -65,6 +65,23 @@ data:
       "agent": {
         "region": "{{region_name}}"
       },
+      "metrics": {
+        "namespace": "Custom",
+        "append_dimensions": {
+          "InstanceId": "${aws:InstanceId}"
+        },
+        "metrics_collected": {
+          "mem": {
+            "measurement": [
+              {
+                "name": "mem_used_percent",
+                "rename": "memory_used_percent"
+              }
+            ],
+            "metrics_collection_interval": 60
+          }
+        }
+      },
       "logs": {
         "metrics_collected": {
           "kubernetes": {
