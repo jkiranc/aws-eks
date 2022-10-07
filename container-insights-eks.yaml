@@ -78,17 +78,11 @@ data:
         "metrics_collected": {
           "nvidia_gpu": {
             "measurement": [
-              "utilization_gpu",
-              "power_draw",
-              "temperature_gpu"
+              "nvidia_smi_utilization_gpu",
+              "nvidia_smi_utilization_memory"
             ],
             "metrics_collection_interval": 60
           }
-        },
-        "append_dimensions": {
-          "InstanceId": "${aws:InstanceId}",
-          "InstanceType": "${aws:InstanceType}",
-          "AutoScalingGroupName": "${aws:AutoScalingGroupName}"
         },
         "force_flush_interval": 5
       }
